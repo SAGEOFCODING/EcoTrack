@@ -102,7 +102,7 @@ EcoTrack.Tests = {
         this.assert(emptyRecs.length > 0, "Returns fallback recommendations when no specific triggers match");
 
         // 4. Savings Math
-        const totalSavings = EcoTrack.Recommendations.calculateTotalSavings([{impactKg: 100}, {impactKg: 250}]);
+        const totalSavings = EcoTrack.Recommendations.calculateTotalSavings([{annualSavingsKg: 100}, {annualSavingsKg: 250}]);
         this.assert(totalSavings === 350, "Total potential savings correctly sums impact values");
 
         console.groupEnd();
@@ -112,19 +112,19 @@ EcoTrack.Tests = {
         console.group("🏆 EcoScores Validation");
 
         // 1. Search Logic
-        const results = EcoTrack.EcoScoreDB.search("beef");
-        this.assert(results.length > 0 && results[0].name.toLowerCase().includes("beef"), "Search correctly returns relevant food items");
+        const results = EcoTrack.EcoScores.search("beef");
+        this.assert(results.length > 0 && results.some(r => r.name.toLowerCase().includes("beef")), "Search correctly returns relevant food items");
 
         // 2. Empty Search
-        const emptySearch = EcoTrack.EcoScoreDB.search("");
+        const emptySearch = EcoTrack.EcoScores.search("");
         this.assert(emptySearch.length > 10, "Empty search returns full default dataset list");
 
         // 3. Comparison Math
-        const beef = EcoTrack.EcoScoreDB.search("beef")[0];
-        const lentils = EcoTrack.EcoScoreDB.search("lentils")[0];
-        const diff = EcoTrack.EcoScoreDB.compare(beef.id, lentils.id);
-        this.assert(diff.differenceKg > 0, "Comparison correctly calculates absolute difference");
-        this.assert(diff.ratio > 1, "Comparison correctly calculates ratio");
+        const beef = EcoTrack.EcoScores.search("beef burger")[0];
+        const vegan = EcoTrack.EcoScores.search("vegan meal")[0];
+        const diff = EcoTrack.EcoScores.compare(beef.id, vegan.id);
+        this.assert(diff.diffKg > 0, "Comparison correctly calculates absolute difference");
+        this.assert(parseFloat(diff.timesMore) > 1, "Comparison correctly calculates ratio");
 
         console.groupEnd();
     },

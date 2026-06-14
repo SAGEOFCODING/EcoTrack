@@ -88,7 +88,7 @@ EcoTrack.Pages.Calculator = {
         this.formData = { transport: {}, food: {}, energy: {}, shopping: {} };
         this._renderStep();
         this._bindNav();
-        this._updateGauge();
+        this._liveUpdate();
     },
 
     _bindNav() {
@@ -257,26 +257,24 @@ EcoTrack.Pages.Calculator = {
     },
 
     _bindStepInputs() {
-        // Range sliders
-        const kmSlider = document.getElementById('calc-annual-km');
-        if (kmSlider) {
-            kmSlider.addEventListener('input', (e) => {
-                document.getElementById('km-display').textContent = parseInt(e.target.value).toLocaleString() + ' km';
+        // Generic range slider live text and carbon update
+        document.querySelectorAll('#calc-step-content input[type="range"]').forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                const name = e.target.name;
+                const display = document.getElementById(`${name}-display`);
+                const suffix = name === 'annualKm' ? 'km' : 'items';
+                if (display) {
+                    display.textContent = parseInt(e.target.value).toLocaleString() + ' ' + suffix;
+                }
                 this._liveUpdate();
             });
-        }
-
-        const clothingSlider = document.getElementById('calc-clothing-items');
-        if (clothingSlider) {
-            clothingSlider.addEventListener('input', (e) => {
-                document.getElementById('clothing-display').textContent = e.target.value + ' items';
-                this._liveUpdate();
-            });
-        }
+        });
 
         // All other inputs for live update
         document.querySelectorAll('#calc-step-content input, #calc-step-content select').forEach(input => {
-            input.addEventListener('change', () => this._liveUpdate());
+            if (input.type !== 'range') {
+                input.addEventListener('change', () => this._liveUpdate());
+            }
         });
     },
 
