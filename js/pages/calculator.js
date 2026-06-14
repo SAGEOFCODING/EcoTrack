@@ -456,11 +456,15 @@ EcoTrack.Pages.Calculator = {
                 <div class="grid grid-2 mt-8">
                     <div class="card" style="padding: var(--space-6);">
                         <h4 style="margin-bottom: var(--space-4);">Category Breakdown</h4>
-                        <canvas id="results-doughnut" height="260"></canvas>
+                        <div style="height: 260px; position: relative;">
+                            <canvas id="results-doughnut"></canvas>
+                        </div>
                     </div>
                     <div class="card" style="padding: var(--space-6);">
                         <h4 style="margin-bottom: var(--space-4);">How You Compare</h4>
-                        <canvas id="results-comparison" height="260"></canvas>
+                        <div style="height: 260px; position: relative;">
+                            <canvas id="results-comparison"></canvas>
+                        </div>
                     </div>
                 </div>
 
