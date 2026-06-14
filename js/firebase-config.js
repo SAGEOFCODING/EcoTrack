@@ -26,11 +26,12 @@ EcoTrack.FirebaseConfig = {
         try {
             // Wait for Firebase modules to load
             if (!window.FirebaseModules) {
-                await new Promise((resolve) => {
+                await new Promise((resolve, reject) => {
                     if (window.FirebaseModules) {
                         resolve();
                     } else {
                         window.addEventListener('firebase-ready', resolve, { once: true });
+                        setTimeout(() => reject(new Error('Firebase load timeout')), 3000);
                     }
                 });
             }
