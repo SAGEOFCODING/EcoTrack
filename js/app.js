@@ -19,45 +19,60 @@ EcoTrack.App = {
     async init() {
         console.log('🌿 EcoTrack initializing...');
 
-        // Initialize navbar
-        EcoTrack.Navbar.init();
+        try {
+            // Initialize navbar
+            EcoTrack.Navbar.init();
 
-        // Initialize charts defaults
-        EcoTrack.Charts.init();
+            // Initialize charts defaults
+            EcoTrack.Charts.init();
 
-        // Initialize Firebase
-        await EcoTrack.FirebaseConfig.init();
+            // Initialize Firebase
+            await EcoTrack.FirebaseConfig.init();
 
-        // Initialize auth
-        await EcoTrack.AuthService.init();
+            // Initialize auth
+            await EcoTrack.AuthService.init();
 
-        // Set up routing
-        window.addEventListener('hashchange', () => this._onRouteChange());
+            // Set up routing
+            window.addEventListener('hashchange', () => this._onRouteChange());
 
-        // Initial route
-        this._onRouteChange();
+            // Initial route
+            this._onRouteChange();
 
-        // Hide loader
-        setTimeout(() => {
-            const loader = document.getElementById('page-loader');
-            if (loader) {
-                loader.classList.add('hidden');
-                setTimeout(() => loader.remove(), 500);
-            }
-        }, 600);
-
-        console.log('✅ EcoTrack ready!');
+            console.log('✅ EcoTrack ready!');
+        } catch (error) {
+            console.error('❌ Critical initialization error:', error);
+            EcoTrack.Toast?.error('Failed to initialize application completely.');
+        } finally {
+            // Hide loader regardless of success/failure
+            setTimeout(() => {
+                const loader = document.getElementById('page-loader');
+                if (loader) {
+                    loader.classList.add('hidden');
+                    setTimeout(() => loader.remove(), 500);
+                }
+            }, 600);
+        }
     },
 
-    _onRouteChange() {
-        const hash = window.location.hash.slice(1) || 'home';
-        const pageName = hash.split('?')[0]; // Remove query params
+    _isNavigating: false,
 
-        if (this.pages[pageName]) {
-            this._navigate(pageName);
-        } else {
-            // Default to home for unknown routes
-            window.location.hash = '#home';
+    _onRouteChange() {
+        if (this._isNavigating) return;
+        this._isNavigating = true;
+
+        try {
+            const hash = window.location.hash.slice(1) || 'home';
+            const pageName = hash.split('?')[0]; // Remove query params
+
+            if (this.pages[pageName]) {
+                this._navigate(pageName);
+            } else {
+                // Default to home for unknown routes
+                window.location.hash = '#home';
+            }
+        } finally {
+            // Release lock after a short delay to prevent thrashing
+            setTimeout(() => { this._isNavigating = false; }, 50);
         }
     },
 

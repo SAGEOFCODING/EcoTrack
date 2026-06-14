@@ -11,15 +11,18 @@ EcoTrack.Modal = {
 
         container.innerHTML = `
             <div class="modal-header flex justify-between items-center mb-6">
-                <h3>${options.title || ''}</h3>
+                <h3 id="modal-title">${options.title || ''}</h3>
                 <button class="btn btn-icon btn-ghost" id="modal-close" aria-label="Close modal">✕</button>
             </div>
-            <div class="modal-body">${content}</div>
+            <div class="modal-body" id="modal-body-desc">${content}</div>
             ${options.footer ? `<div class="modal-footer mt-6 flex justify-end gap-3">${options.footer}</div>` : ''}
         `;
 
         overlay.classList.add('active');
         overlay.setAttribute('aria-hidden', 'false');
+        overlay.setAttribute('aria-labelledby', 'modal-title');
+        overlay.setAttribute('aria-describedby', 'modal-body-desc');
+        overlay.setAttribute('tabindex', '-1');
 
         // Close handlers
         document.getElementById('modal-close')?.addEventListener('click', () => this.close());

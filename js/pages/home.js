@@ -169,19 +169,25 @@ EcoTrack.Pages.Home = {
         if (!el) return;
 
         const duration = 2000;
-        const steps = 60;
-        const increment = target / steps;
-        let current = 0;
         const isDecimal = target % 1 !== 0;
+        let startTimestamp = null;
 
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                current = target;
-                clearInterval(timer);
-            }
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            
+            // easeOutQuart
+            const easeProgress = 1 - Math.pow(1 - progress, 4);
+            const current = target * easeProgress;
+
             el.textContent = prefix + (isDecimal ? current.toFixed(1) : Math.round(current)) + suffix;
-        }, duration / steps);
+
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+
+        window.requestAnimationFrame(step);
     }
 };
 

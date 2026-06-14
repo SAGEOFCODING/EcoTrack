@@ -9,6 +9,9 @@ EcoTrack.AuthService = {
     listeners: [],
 
     async init() {
+        if (this._initialized) return this.currentUser;
+        this._initialized = true;
+
         if (EcoTrack.FirebaseConfig.isOnline()) {
             const { signInAnonymously, onAuthStateChanged } = window.FirebaseModules;
             const auth = EcoTrack.FirebaseConfig.auth;

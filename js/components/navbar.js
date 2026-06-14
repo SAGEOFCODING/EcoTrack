@@ -27,16 +27,21 @@ EcoTrack.Navbar = {
             });
         }
 
-        // Scroll effect
-        let lastScroll = 0;
+        // Scroll effect with requestAnimationFrame throttling
+        let ticking = false;
         window.addEventListener('scroll', () => {
-            const currentScroll = window.scrollY;
-            if (currentScroll > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const currentScroll = window.scrollY;
+                    if (currentScroll > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                    ticking = false;
+                });
+                ticking = true;
             }
-            lastScroll = currentScroll;
         }, { passive: true });
 
         // Close menu on outside click

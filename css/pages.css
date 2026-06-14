@@ -897,6 +897,11 @@
 }
 
 @media (max-width: 768px) {
+    body {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
     .hero-title {
         font-size: var(--fs-3xl);
     }
@@ -953,5 +958,10 @@
     
     .step-line {
         width: 30px;
+    }
+    
+    .comparison-item-name {
+        word-break: break-word;
+        white-space: normal;
     }
 }
