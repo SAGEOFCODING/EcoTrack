@@ -37,6 +37,21 @@ EcoTrack.Pages.Actions = {
         }
     },
 
+    _renderBanner(adoptedCount, adoptedSavings) {
+        if (adoptedSavings <= 0) return '';
+        return `
+            <div class="card card-glow mb-6" style="padding: var(--space-5);">
+                <div class="flex items-center gap-4">
+                    <span style="font-size: 2rem;">🎉</span>
+                    <div>
+                        <h4>You're making a difference!</h4>
+                        <p>By adopting ${adoptedCount} action${adoptedCount !== 1 ? 's' : ''}, you could save up to <strong class="text-accent">${(adoptedSavings / 1000).toFixed(1)} tonnes CO₂</strong> per year.</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+
     _renderActions(data) {
         const content = document.getElementById('actions-content');
         if (!content) return;
@@ -56,21 +71,15 @@ EcoTrack.Pages.Actions = {
         content.innerHTML = `
             <div class="actions-summary">
                 ${EcoTrack.Cards.stat(recommendations.length, 'Recommendations', '🎯', 'accent')}
-                ${EcoTrack.Cards.stat(adoptedCount, 'Actions Adopted', '✅', 'secondary')}
+                <div id="adopted-count-wrapper">
+                    ${EcoTrack.Cards.stat(adoptedCount, 'Actions Adopted', '✅', 'secondary')}
+                </div>
                 ${EcoTrack.Cards.stat((totalSavings / 1000).toFixed(1) + 't', 'Potential Savings', '💡', 'warning')}
             </div>
 
-            ${adoptedSavings > 0 ? `
-                <div class="card card-glow mb-6" style="padding: var(--space-5);">
-                    <div class="flex items-center gap-4">
-                        <span style="font-size: 2rem;">🎉</span>
-                        <div>
-                            <h4>You're making a difference!</h4>
-                            <p>By adopting ${adoptedCount} action${adoptedCount !== 1 ? 's' : ''}, you could save up to <strong class="text-accent">${(adoptedSavings / 1000).toFixed(1)} tonnes CO₂</strong> per year.</p>
-                        </div>
-                    </div>
-                </div>
-            ` : ''}
+            <div id="actions-banner-container">
+                ${this._renderBanner(adoptedCount, adoptedSavings)}
+            </div>
 
             <div class="tabs mb-6" id="actions-tabs">
                 <button class="tab-btn active" data-filter="all">All</button>
@@ -105,6 +114,22 @@ EcoTrack.Pages.Actions = {
                     delete this.adoptedActions[actionId];
                     e.target.closest('.action-card')?.classList.remove('adopted');
                     EcoTrack.Toast.info('Action removed');
+                }
+
+                // Update summary stats & banner dynamically
+                const adoptedCount = Object.keys(this.adoptedActions).length;
+                const adoptedSavings = recommendations
+                    .filter(r => this.adoptedActions[r.id])
+                    .reduce((sum, r) => sum + r.annualSavingsKg, 0);
+
+                const countWrapper = document.getElementById('adopted-count-wrapper');
+                if (countWrapper) {
+                    countWrapper.innerHTML = EcoTrack.Cards.stat(adoptedCount, 'Actions Adopted', '✅', 'secondary');
+                }
+
+                const bannerContainer = document.getElementById('actions-banner-container');
+                if (bannerContainer) {
+                    bannerContainer.innerHTML = this._renderBanner(adoptedCount, adoptedSavings);
                 }
             });
         });

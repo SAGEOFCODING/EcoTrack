@@ -5,8 +5,29 @@ const ASSETS_TO_CACHE = [
   '/css/main.css',
   '/css/components.css',
   '/css/pages.css',
-  '/js/app.js',
-  '/manifest.json'
+  '/manifest.json',
+  '/js/data/emission-factors.js',
+  '/js/data/recommendations.js',
+  '/js/data/offsets.js',
+  '/js/data/eco-scores.js',
+  '/js/firebase-config.js',
+  '/js/services/auth.js',
+  '/js/services/firestore.js',
+  '/js/services/calculator.js',
+  '/js/components/navbar.js',
+  '/js/components/charts.js',
+  '/js/components/cards.js',
+  '/js/components/modal.js',
+  '/js/components/forms.js',
+  '/js/tests.js',
+  '/js/pages/home.js',
+  '/js/pages/calculator.js',
+  '/js/pages/dashboard.js',
+  '/js/pages/actions.js',
+  '/js/pages/offset.js',
+  '/js/pages/ecoscore.js',
+  '/js/pages/education.js',
+  '/js/app.js'
 ];
 
 // Install event - Cache core assets
