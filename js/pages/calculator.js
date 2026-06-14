@@ -2,7 +2,7 @@
  * EcoTrack — Calculator Page
  * Multi-step carbon footprint calculator
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 EcoTrack.Pages = EcoTrack.Pages || {};
 
 EcoTrack.Pages.Calculator = {

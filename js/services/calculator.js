@@ -2,7 +2,7 @@
  * EcoTrack — Carbon Calculation Engine
  * Processes user inputs and calculates carbon footprint
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 
 EcoTrack.CalculatorEngine = {
     /**

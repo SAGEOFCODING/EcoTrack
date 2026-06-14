@@ -1,7 +1,7 @@
 /**
  * EcoTrack — Navbar Component
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 
 EcoTrack.Navbar = {
     init() {

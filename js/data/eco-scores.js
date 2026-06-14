@@ -2,7 +2,7 @@
  * EcoTrack — Eco-Score Daily Activities Database
  * Rates everyday activities on A-F scale with CO₂ equivalents
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 
 EcoTrack.EcoScores = {
     categories: [

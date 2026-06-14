@@ -1,7 +1,7 @@
 /**
  * EcoTrack — Modal & Toast Components
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 
 EcoTrack.Modal = {
     open(content, options = {}) {

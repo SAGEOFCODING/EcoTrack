@@ -2,7 +2,7 @@
  * EcoTrack — Main Application Router
  * SPA hash-based routing with page transitions
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 
 EcoTrack.App = {
     currentPage: null,

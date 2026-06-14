@@ -2,7 +2,7 @@
  * EcoTrack — Firestore Service
  * Handles all data persistence with localStorage fallback
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 
 EcoTrack.FirestoreService = {
     _getStorageKey(path) {

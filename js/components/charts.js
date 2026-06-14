@@ -2,7 +2,7 @@
  * EcoTrack — Chart.js Wrapper Components
  * Consistent chart theming and helpers
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 
 EcoTrack.Charts = {
     // Global chart defaults

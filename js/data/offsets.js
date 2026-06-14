@@ -1,7 +1,7 @@
 /**
  * EcoTrack — Carbon Offset Projects Database
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 
 EcoTrack.OffsetProjects = {
     categories: [

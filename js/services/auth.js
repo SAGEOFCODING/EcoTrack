@@ -2,7 +2,7 @@
  * EcoTrack — Authentication Service
  * Handles Firebase Anonymous Auth with localStorage fallback
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 
 EcoTrack.AuthService = {
     currentUser: null,

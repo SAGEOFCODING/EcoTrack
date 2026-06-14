@@ -2,7 +2,7 @@
  * EcoTrack — Smart Recommendation Engine Data
  * Decision trees and personalized action recommendations
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 
 EcoTrack.Recommendations = {
     transport: [

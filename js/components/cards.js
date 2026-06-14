@@ -1,7 +1,7 @@
 /**
  * EcoTrack — Card Components
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 
 EcoTrack.Cards = {
     stat(value, label, icon, colorClass = '') {

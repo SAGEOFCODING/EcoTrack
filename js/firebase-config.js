@@ -2,7 +2,7 @@
  * EcoTrack — Firebase Configuration
  * Handles Firebase app initialization
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 
 EcoTrack.FirebaseConfig = {
     app: null,

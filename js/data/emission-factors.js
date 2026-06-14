@@ -3,7 +3,7 @@
  * Sources: EPA, DEFRA, IPCC published datasets
  * All values in kg CO₂e per unit
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 
 EcoTrack.EmissionFactors = {
     // Transport emission factors

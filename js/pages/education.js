@@ -1,7 +1,7 @@
 /**
  * EcoTrack — Education Page
  */
-const EcoTrack = window.EcoTrack || {};
+var EcoTrack = window.EcoTrack || {};
 EcoTrack.Pages = EcoTrack.Pages || {};
 
 EcoTrack.Pages.Education = {
