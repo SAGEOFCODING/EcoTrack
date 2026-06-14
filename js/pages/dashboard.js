@@ -128,6 +128,10 @@ EcoTrack.Pages.Dashboard = {
                     </div>
                 </div>
             </div>
+
+            <div class="mt-8">
+                ${EcoTrack.Cards.impactTranslator(data.totalTonnes * 1000)}
+            </div>
         `;
 
         // Render charts after DOM update

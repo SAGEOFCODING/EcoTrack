@@ -123,6 +123,40 @@ EcoTrack.Cards = {
                 <h4>${title}</h4>
                 <p>${description}</p>
             </div>`;
+    },
+
+    impactTranslator(kgCO2) {
+        // EPA conversion factors
+        const miles = Math.round(kgCO2 * 2.47).toLocaleString();
+        const phones = Math.round(kgCO2 * 121.6).toLocaleString();
+        const trees = Math.max(1, Math.round(kgCO2 * 0.0165)).toLocaleString();
+
+        return `
+            <div class="card animate-fade-in-up" style="background: var(--gradient-primary); color: var(--text-inverse); padding: var(--space-6);">
+                <h4 style="color: var(--text-inverse); margin-bottom: var(--space-4); border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: var(--space-3);">🌍 Real-World Impact</h4>
+                <p style="color: rgba(255,255,255,0.9); margin-bottom: var(--space-4);">Your footprint of <strong>${Math.round(kgCO2).toLocaleString()} kg CO₂</strong> is equivalent to:</p>
+                
+                <div class="flex flex-col gap-3">
+                    <div class="card card-flat" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: var(--space-3); color: white;">
+                        <div class="flex items-center gap-3">
+                            <span style="font-size: 1.5rem;">🚗</span>
+                            <div>Driving <strong>${miles} miles</strong> in an average car</div>
+                        </div>
+                    </div>
+                    <div class="card card-flat" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: var(--space-3); color: white;">
+                        <div class="flex items-center gap-3">
+                            <span style="font-size: 1.5rem;">📱</span>
+                            <div>Charging <strong>${phones} smartphones</strong></div>
+                        </div>
+                    </div>
+                    <div class="card card-flat" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: var(--space-3); color: white;">
+                        <div class="flex items-center gap-3">
+                            <span style="font-size: 1.5rem;">🌳</span>
+                            <div><strong>${trees} tree seedlings</strong> grown for 10 years to offset</div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
     }
 };
 

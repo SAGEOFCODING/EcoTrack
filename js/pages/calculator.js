@@ -464,6 +464,10 @@ EcoTrack.Pages.Calculator = {
                     </div>
                 </div>
 
+                <div class="mt-8">
+                    ${EcoTrack.Cards.impactTranslator(result.totalTonnes * 1000)}
+                </div>
+
                 <div class="flex justify-center gap-4 mt-8">
                     <a href="#dashboard" class="btn btn-primary btn-lg">📊 View Dashboard</a>
                     <a href="#actions" class="btn btn-secondary btn-lg">🎯 See Action Plans</a>
