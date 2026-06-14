@@ -132,8 +132,8 @@ EcoTrack/
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/challange-3.git
-cd challange-3
+git clone https://github.com/YOUR_USERNAME/EcoTrack.git
+cd EcoTrack
 
 # Serve with any HTTP server
 # Option 1: Python
