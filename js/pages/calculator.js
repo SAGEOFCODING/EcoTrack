@@ -152,42 +152,24 @@ EcoTrack.Pages.Calculator = {
         const d = this.formData.transport;
         return `
             <h3 style="margin-bottom: var(--space-6);">🚗 Transport & Travel</h3>
-            <div class="form-group">
-                <label class="form-label">How do you primarily commute?</label>
-                <div class="radio-group">
-                    ${['car', 'publicTransit', 'bicycle', 'walk', 'remote'].map(opt => `
-                        <div class="radio-option">
-                            <input type="radio" name="primaryCommute" value="${opt}" id="commute-${opt}" ${d.primaryCommute === opt ? 'checked' : ''}>
-                            <label for="commute-${opt}">${{car:'🚗 Car', publicTransit:'🚌 Public Transit', bicycle:'🚲 Bicycle', walk:'🚶 Walk', remote:'🏠 Remote'}[opt]}</label>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Annual driving distance (km)</label>
-                <div class="range-slider">
-                    <input type="range" name="annualKm" min="0" max="50000" step="500" value="${d.annualKm || 10000}" id="calc-annual-km">
-                    <div class="range-value" id="km-display">${(d.annualKm || 10000).toLocaleString()} km</div>
-                    <div class="range-labels"><span>0 km</span><span>50,000 km</span></div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Number of flights per year</label>
-                <select class="form-select" name="flightsPerYear" id="calc-flights">
-                    ${[0,1,2,3,4,5,6,7,8,9,10].map(n => `<option value="${n}" ${d.flightsPerYear == n ? 'selected' : ''}>${n}${n === 10 ? '+' : ''} flights</option>`).join('')}
-                </select>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Vehicle type (if driving)</label>
-                <div class="radio-group">
-                    ${['petrol', 'diesel', 'hybrid', 'electric', 'none'].map(opt => `
-                        <div class="radio-option">
-                            <input type="radio" name="vehicleType" value="${opt}" id="vehicle-${opt}" ${(d.vehicleType || 'petrol') === opt ? 'checked' : ''}>
-                            <label for="vehicle-${opt}">${{petrol:'⛽ Petrol', diesel:'🛢️ Diesel', hybrid:'🔋 Hybrid', electric:'⚡ Electric', none:'❌ No Car'}[opt]}</label>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
+            ${EcoTrack.Forms.radioGroup('How do you primarily commute?', 'primaryCommute', d.primaryCommute || 'car', [
+                {value: 'car', label: '🚗 Car'},
+                {value: 'publicTransit', label: '🚌 Public Transit'},
+                {value: 'bicycle', label: '🚲 Bicycle'},
+                {value: 'walk', label: '🚶 Walk'},
+                {value: 'remote', label: '🏠 Remote'}
+            ])}
+            ${EcoTrack.Forms.rangeSlider('Annual driving distance', 'annualKm', 0, 50000, 500, d.annualKm || 10000, 'km')}
+            ${EcoTrack.Forms.select('Number of flights per year', 'flightsPerYear', d.flightsPerYear || 0, 
+                [0,1,2,3,4,5,6,7,8,9,10].map(n => ({value: n, label: n + (n === 10 ? '+' : '') + ' flights'}))
+            )}
+            ${EcoTrack.Forms.radioGroup('Vehicle type (if driving)', 'vehicleType', d.vehicleType || 'petrol', [
+                {value: 'petrol', label: '⛽ Petrol'},
+                {value: 'diesel', label: '🛢️ Diesel'},
+                {value: 'hybrid', label: '🔋 Hybrid'},
+                {value: 'electric', label: '⚡ Electric'},
+                {value: 'none', label: '❌ No Car'}
+            ])}
         `;
     },
 
@@ -195,41 +177,23 @@ EcoTrack.Pages.Calculator = {
         const d = this.formData.food;
         return `
             <h3 style="margin-bottom: var(--space-6);">🍽️ Food & Diet</h3>
-            <div class="form-group">
-                <label class="form-label">What best describes your diet?</label>
-                <div class="radio-group">
-                    ${['highMeat', 'mediumMeat', 'lowMeat', 'pescatarian', 'vegetarian', 'vegan'].map(opt => `
-                        <div class="radio-option">
-                            <input type="radio" name="dietType" value="${opt}" id="diet-${opt}" ${(d.dietType || 'mediumMeat') === opt ? 'checked' : ''}>
-                            <label for="diet-${opt}">${{highMeat:'🥩 Heavy Meat', mediumMeat:'🍗 Moderate Meat', lowMeat:'🥓 Light Meat', pescatarian:'🐟 Pescatarian', vegetarian:'🥗 Vegetarian', vegan:'🌱 Vegan'}[opt]}</label>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">How much food do you waste?</label>
-                <div class="radio-group">
-                    ${['low', 'average', 'high'].map(opt => `
-                        <div class="radio-option">
-                            <input type="radio" name="foodWaste" value="${opt}" id="waste-${opt}" ${(d.foodWaste || 'average') === opt ? 'checked' : ''}>
-                            <label for="waste-${opt}">${{low:'♻️ Minimal (compost)', average:'📦 Some Waste', high:'🗑️ Frequent Waste'}[opt]}</label>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Do you buy local & seasonal produce?</label>
-                <div class="radio-group">
-                    <div class="radio-option">
-                        <input type="radio" name="localFood" value="true" id="local-yes" ${d.localFood ? 'checked' : ''}>
-                        <label for="local-yes">🌾 Yes, mostly local</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" name="localFood" value="false" id="local-no" ${!d.localFood ? 'checked' : ''}>
-                        <label for="local-no">🏪 No, mostly supermarket</label>
-                    </div>
-                </div>
-            </div>
+            ${EcoTrack.Forms.radioGroup('What best describes your diet?', 'dietType', d.dietType || 'mediumMeat', [
+                {value: 'highMeat', label: '🥩 Heavy Meat'},
+                {value: 'mediumMeat', label: '🍗 Moderate Meat'},
+                {value: 'lowMeat', label: '🥓 Light Meat'},
+                {value: 'pescatarian', label: '🐟 Pescatarian'},
+                {value: 'vegetarian', label: '🥗 Vegetarian'},
+                {value: 'vegan', label: '🌱 Vegan'}
+            ])}
+            ${EcoTrack.Forms.radioGroup('How much food do you waste?', 'foodWaste', d.foodWaste || 'average', [
+                {value: 'low', label: '♻️ Minimal (compost)'},
+                {value: 'average', label: '📦 Some Waste'},
+                {value: 'high', label: '🗑️ Frequent Waste'}
+            ])}
+            ${EcoTrack.Forms.radioGroup('Do you buy local & seasonal produce?', 'localFood', d.localFood !== undefined ? String(d.localFood) : 'false', [
+                {value: 'true', label: '🌾 Yes, mostly local'},
+                {value: 'false', label: '🏪 No, mostly supermarket'}
+            ])}
         `;
     },
 
@@ -237,52 +201,29 @@ EcoTrack.Pages.Calculator = {
         const d = this.formData.energy;
         return `
             <h3 style="margin-bottom: var(--space-6);">⚡ Home Energy</h3>
-            <div class="form-group">
-                <label class="form-label">Home size</label>
-                <div class="radio-group">
-                    ${['small', 'medium', 'large', 'veryLarge'].map(opt => `
-                        <div class="radio-option">
-                            <input type="radio" name="homeSize" value="${opt}" id="home-${opt}" ${(d.homeSize || 'medium') === opt ? 'checked' : ''}>
-                            <label for="home-${opt}">${{small:'🏢 Apartment', medium:'🏠 Small House', large:'🏡 Large House', veryLarge:'🏰 Very Large'}[opt]}</label>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Electricity source</label>
-                <div class="radio-group">
-                    ${['grid_average', 'renewable', 'coal', 'gas'].map(opt => `
-                        <div class="radio-option">
-                            <input type="radio" name="electricitySource" value="${opt}" id="elec-${opt}" ${(d.electricitySource || 'grid_average') === opt ? 'checked' : ''}>
-                            <label for="elec-${opt}">${{grid_average:'🔌 Grid Average', renewable:'☀️ Renewable', coal:'🏭 Coal Heavy', gas:'🔥 Gas Heavy'}[opt]}</label>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Primary heating type</label>
-                <div class="radio-group">
-                    ${['naturalGas', 'oil', 'electric', 'heatPump', 'wood'].map(opt => `
-                        <div class="radio-option">
-                            <input type="radio" name="heatingType" value="${opt}" id="heat-${opt}" ${(d.heatingType || 'naturalGas') === opt ? 'checked' : ''}>
-                            <label for="heat-${opt}">${{naturalGas:'🔥 Natural Gas', oil:'🛢️ Oil/Fuel', electric:'⚡ Electric', heatPump:'🔄 Heat Pump', wood:'🪵 Wood'}[opt]}</label>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Energy saving measures</label>
-                <div class="radio-group">
-                    <div class="checkbox-option">
-                        <input type="checkbox" name="thermostatReduced" id="thermo-reduced" ${d.thermostatReduced ? 'checked' : ''}>
-                        <label for="thermo-reduced">🌡️ Lowered thermostat 2°C+</label>
-                    </div>
-                    <div class="checkbox-option">
-                        <input type="checkbox" name="goodInsulation" id="good-insulation" ${d.goodInsulation ? 'checked' : ''}>
-                        <label for="good-insulation">🏗️ Good insulation</label>
-                    </div>
-                </div>
-            </div>
+            ${EcoTrack.Forms.radioGroup('Home size', 'homeSize', d.homeSize || 'medium', [
+                {value: 'small', label: '🏢 Apartment'},
+                {value: 'medium', label: '🏠 Small House'},
+                {value: 'large', label: '🏡 Large House'},
+                {value: 'veryLarge', label: '🏰 Very Large'}
+            ])}
+            ${EcoTrack.Forms.radioGroup('Electricity source', 'electricitySource', d.electricitySource || 'grid_average', [
+                {value: 'grid_average', label: '🔌 Grid Average'},
+                {value: 'renewable', label: '☀️ Renewable'},
+                {value: 'coal', label: '🏭 Coal Heavy'},
+                {value: 'gas', label: '🔥 Gas Heavy'}
+            ])}
+            ${EcoTrack.Forms.radioGroup('Primary heating type', 'heatingType', d.heatingType || 'naturalGas', [
+                {value: 'naturalGas', label: '🔥 Natural Gas'},
+                {value: 'oil', label: '🛢️ Oil/Fuel'},
+                {value: 'electric', label: '⚡ Electric'},
+                {value: 'heatPump', label: '🔄 Heat Pump'},
+                {value: 'wood', label: '🪵 Wood'}
+            ])}
+            ${EcoTrack.Forms.checkboxGroup('Energy saving measures', [
+                {name: 'thermostatReduced', label: '🌡️ Lowered thermostat 2°C+', checked: !!d.thermostatReduced},
+                {name: 'goodInsulation', label: '🏗️ Good insulation', checked: !!d.goodInsulation}
+            ])}
         `;
     },
 
@@ -290,58 +231,28 @@ EcoTrack.Pages.Calculator = {
         const d = this.formData.shopping;
         return `
             <h3 style="margin-bottom: var(--space-6);">🛒 Shopping & Lifestyle</h3>
-            <div class="form-group">
-                <label class="form-label">Clothing buying habits</label>
-                <div class="radio-group">
-                    ${['fastFashion', 'sustainable', 'secondHand'].map(opt => `
-                        <div class="radio-option">
-                            <input type="radio" name="clothingHabit" value="${opt}" id="cloth-${opt}" ${(d.clothingHabit || 'sustainable') === opt ? 'checked' : ''}>
-                            <label for="cloth-${opt}">${{fastFashion:'🛍️ Fast Fashion', sustainable:'🌱 Sustainable Brands', secondHand:'♻️ Second-Hand'}[opt]}</label>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Clothing items purchased per year</label>
-                <div class="range-slider">
-                    <input type="range" name="clothingItemsPerYear" min="0" max="60" step="1" value="${d.clothingItemsPerYear || 12}" id="calc-clothing-items">
-                    <div class="range-value" id="clothing-display">${d.clothingItemsPerYear || 12} items</div>
-                    <div class="range-labels"><span>0</span><span>60 items</span></div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Electronics upgrade frequency</label>
-                <div class="radio-group">
-                    ${['frequent', 'average', 'rare'].map(opt => `
-                        <div class="radio-option">
-                            <input type="radio" name="electronicsFrequency" value="${opt}" id="elec-freq-${opt}" ${(d.electronicsFrequency || 'average') === opt ? 'checked' : ''}>
-                            <label for="elec-freq-${opt}">${{frequent:'📱 Every 1-2 years', average:'💻 Every 2-3 years', rare:'🔧 4+ years (repair)'}[opt]}</label>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Overall spending level</label>
-                <div class="radio-group">
-                    ${['low', 'average', 'high'].map(opt => `
-                        <div class="radio-option">
-                            <input type="radio" name="spendingLevel" value="${opt}" id="spend-${opt}" ${(d.spendingLevel || 'average') === opt ? 'checked' : ''}>
-                            <label for="spend-${opt}">${{low:'🧘 Minimalist', average:'⚖️ Moderate', high:'🛒 High Consumer'}[opt]}</label>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Online delivery frequency</label>
-                <div class="radio-group">
-                    ${['rare', 'monthly', 'weekly', 'daily'].map(opt => `
-                        <div class="radio-option">
-                            <input type="radio" name="deliveryFrequency" value="${opt}" id="delivery-${opt}" ${(d.deliveryFrequency || 'monthly') === opt ? 'checked' : ''}>
-                            <label for="delivery-${opt}">${{rare:'📬 Rarely', monthly:'📦 Monthly', weekly:'🚚 Weekly', daily:'📫 Daily'}[opt]}</label>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
+            ${EcoTrack.Forms.radioGroup('Clothing buying habits', 'clothingHabit', d.clothingHabit || 'sustainable', [
+                {value: 'fastFashion', label: '🛍️ Fast Fashion'},
+                {value: 'sustainable', label: '🌱 Sustainable Brands'},
+                {value: 'secondHand', label: '♻️ Second-Hand'}
+            ])}
+            ${EcoTrack.Forms.rangeSlider('Clothing items purchased per year', 'clothingItemsPerYear', 0, 60, 1, d.clothingItemsPerYear || 12, 'items')}
+            ${EcoTrack.Forms.radioGroup('Electronics upgrade frequency', 'electronicsFrequency', d.electronicsFrequency || 'average', [
+                {value: 'frequent', label: '📱 Every 1-2 years'},
+                {value: 'average', label: '💻 Every 2-3 years'},
+                {value: 'rare', label: '🔧 4+ years (repair)'}
+            ])}
+            ${EcoTrack.Forms.radioGroup('Overall spending level', 'spendingLevel', d.spendingLevel || 'average', [
+                {value: 'low', label: '🧘 Minimalist'},
+                {value: 'average', label: '⚖️ Moderate'},
+                {value: 'high', label: '🛒 High Consumer'}
+            ])}
+            ${EcoTrack.Forms.radioGroup('Online delivery frequency', 'deliveryFrequency', d.deliveryFrequency || 'monthly', [
+                {value: 'rare', label: '📬 Rarely'},
+                {value: 'monthly', label: '📦 Monthly'},
+                {value: 'weekly', label: '🚚 Weekly'},
+                {value: 'daily', label: '📫 Daily'}
+            ])}
         `;
     },
 
