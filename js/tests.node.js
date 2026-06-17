@@ -130,6 +130,18 @@ it("Total potential savings correctly sums impact values", () => {
     assert.strictEqual(totalSavings, 350, "Savings sum should be 350");
 });
 
+it("Returns category-specific recommendations", () => {
+    const transportRecs = EcoTrack.Recommendations.getByCategory('transport');
+    assert.ok(transportRecs.length > 0, "Should return transport recommendations");
+    assert.ok(transportRecs.every(r => r.category === 'transport'), "All should be transport category");
+});
+
+it("Returns empty array for unknown category", () => {
+    const unknownRecs = EcoTrack.Recommendations.getByCategory('nonexistent');
+    assert.ok(Array.isArray(unknownRecs), "Should return an array");
+    assert.strictEqual(unknownRecs.length, 0, "Should return empty array");
+});
+
 // ----------------------------------------------------
 // EcoScores Validation
 // ----------------------------------------------------
@@ -154,6 +166,105 @@ it("Comparison correctly calculates absolute difference and ratio", () => {
     assert.ok(parseFloat(diff.timesMore) > 1, "Ratio should be greater than 1");
 });
 
+it("Comparison returns null for invalid activity IDs", () => {
+    const result = EcoTrack.EcoScores.compare("nonexistent-1", "nonexistent-2");
+    assert.strictEqual(result, null, "Should return null for invalid IDs");
+});
+
+it("getByCategory filters activities correctly", () => {
+    const meals = EcoTrack.EcoScores.getByCategory("meals");
+    assert.ok(meals.length > 0, "Should return meal activities");
+    assert.ok(meals.every(a => a.category === "meals"), "All should be in meals category");
+});
+
+it("getByCategory 'all' returns all activities", () => {
+    const all = EcoTrack.EcoScores.getByCategory("all");
+    assert.strictEqual(all.length, EcoTrack.EcoScores.activities.length, "Should return all activities");
+});
+
+it("getScore assigns correct grade for low emissions", () => {
+    const scoreA = EcoTrack.EcoScores.getScore(0.3);
+    assert.strictEqual(scoreA.grade, "A", "0.3 kg CO₂ should be grade A");
+});
+
+it("getScore assigns correct grade for high emissions", () => {
+    const scoreF = EcoTrack.EcoScores.getScore(15.0);
+    assert.strictEqual(scoreF.grade, "F", "15.0 kg CO₂ should be grade F");
+});
+
+it("getScore assigns correct grade for moderate emissions", () => {
+    const scoreC = EcoTrack.EcoScores.getScore(2.5);
+    assert.strictEqual(scoreC.grade, "C", "2.5 kg CO₂ should be grade C");
+});
+
+// ----------------------------------------------------
+// OffsetProjects Validation
+// ----------------------------------------------------
+console.log("\n\x1b[33m%s\x1b[0m", "🌍 OffsetProjects Validation:");
+
+// Load offset data
+require('./data/offsets.js');
+
+it("getByCategory 'all' returns all offset projects", () => {
+    const allProjects = EcoTrack.OffsetProjects.getByCategory("all");
+    assert.ok(allProjects.length > 0, "Should return at least one project");
+    assert.strictEqual(allProjects.length, EcoTrack.OffsetProjects.projects.length, "Should return all projects");
+});
+
+it("getByCategory filters offset projects by type", () => {
+    const reforestation = EcoTrack.OffsetProjects.getByCategory("reforestation");
+    assert.ok(reforestation.length > 0, "Should return reforestation projects");
+    assert.ok(reforestation.every(p => p.category === "reforestation"), "All should be reforestation");
+});
+
+it("getById returns correct offset project", () => {
+    const project = EcoTrack.OffsetProjects.getById("amazon-reforestation");
+    assert.ok(project, "Should find Amazon project");
+    assert.strictEqual(project.title, "Amazon Rainforest Restoration", "Title should match");
+});
+
+it("getById returns undefined for non-existent project", () => {
+    const project = EcoTrack.OffsetProjects.getById("nonexistent-project");
+    assert.strictEqual(project, undefined, "Should return undefined");
+});
+
+it("All offset projects have required fields", () => {
+    EcoTrack.OffsetProjects.projects.forEach(p => {
+        assert.ok(p.id, `Project ${p.title} should have an id`);
+        assert.ok(p.title, `Project ${p.id} should have a title`);
+        assert.ok(p.category, `Project ${p.id} should have a category`);
+        assert.ok(p.co2PerDollar > 0, `Project ${p.id} should have positive co2PerDollar`);
+    });
+});
+
+// ----------------------------------------------------
+// CalculatorEngine — quickEstimate
+// ----------------------------------------------------
+console.log("\n\x1b[33m%s\x1b[0m", "⚡ QuickEstimate Validation:");
+
+it("quickEstimate returns valid result for car commuter", () => {
+    const result = EcoTrack.CalculatorEngine.quickEstimate("mediumMeat", "car", "medium");
+    assert.ok(result.total > 0, "Total should be positive");
+    assert.ok(result.totalTonnes > 0, "Total tonnes should be positive");
+    assert.ok(result.ecoScore, "Should have an eco score");
+});
+
+it("quickEstimate returns lower footprint for vegan/walker/small home", () => {
+    const high = EcoTrack.CalculatorEngine.quickEstimate("highMeat", "car", "large");
+    const low = EcoTrack.CalculatorEngine.quickEstimate("vegan", "walk", "small");
+    assert.ok(low.total < high.total, "Vegan walker in small home should have lower footprint");
+});
+
+it("Eco score grade A+ for extremely low emissions", () => {
+    const score = EcoTrack.CalculatorEngine._calcEcoScore(1.5);
+    assert.strictEqual(score.grade, "A+", "1.5 tonnes should get A+");
+});
+
+it("Eco score grade F for extremely high emissions", () => {
+    const score = EcoTrack.CalculatorEngine._calcEcoScore(25);
+    assert.strictEqual(score.grade, "F", "25 tonnes should get F");
+});
+
 // ----------------------------------------------------
 // Test Run Summary
 // ----------------------------------------------------
@@ -168,3 +279,4 @@ if (passed === total) {
 } else {
     process.exit(1);
 }
+

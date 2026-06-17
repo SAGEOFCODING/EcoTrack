@@ -15,6 +15,8 @@ EcoTrack.Tests = {
         this.testCalculatorEngine();
         this.testRecommendationsEngine();
         this.testEcoScores();
+        this.testOffsetProjects();
+        this.testQuickEstimate();
 
         this.report();
     },
@@ -105,6 +107,14 @@ EcoTrack.Tests = {
         const totalSavings = EcoTrack.Recommendations.calculateTotalSavings([{annualSavingsKg: 100}, {annualSavingsKg: 250}]);
         this.assert(totalSavings === 350, "Total potential savings correctly sums impact values");
 
+        // 5. Category-specific recommendations
+        const transportRecs = EcoTrack.Recommendations.getByCategory('transport');
+        this.assert(transportRecs.length > 0 && transportRecs.every(r => r.category === 'transport'), "Returns category-specific recommendations correctly");
+
+        // 6. Unknown category returns empty array
+        const unknownRecs = EcoTrack.Recommendations.getByCategory('nonexistent');
+        this.assert(Array.isArray(unknownRecs) && unknownRecs.length === 0, "Returns empty array for unknown category");
+
         console.groupEnd();
     },
 
@@ -125,6 +135,76 @@ EcoTrack.Tests = {
         const diff = EcoTrack.EcoScores.compare(beef.id, vegan.id);
         this.assert(diff.diffKg > 0, "Comparison correctly calculates absolute difference");
         this.assert(parseFloat(diff.timesMore) > 1, "Comparison correctly calculates ratio");
+
+        // 4. Invalid comparison
+        const invalidResult = EcoTrack.EcoScores.compare("nonexistent-1", "nonexistent-2");
+        this.assert(invalidResult === null, "Comparison returns null for invalid activity IDs");
+
+        // 5. Category filtering
+        const meals = EcoTrack.EcoScores.getByCategory("meals");
+        this.assert(meals.length > 0 && meals.every(a => a.category === "meals"), "getByCategory filters activities correctly");
+
+        // 6. All category returns full list
+        const allActivities = EcoTrack.EcoScores.getByCategory("all");
+        this.assert(allActivities.length === EcoTrack.EcoScores.activities.length, "getByCategory 'all' returns all activities");
+
+        // 7. Grade thresholds
+        const scoreA = EcoTrack.EcoScores.getScore(0.3);
+        this.assert(scoreA.grade === "A", "getScore assigns grade A for 0.3 kg CO₂");
+
+        const scoreF = EcoTrack.EcoScores.getScore(15.0);
+        this.assert(scoreF.grade === "F", "getScore assigns grade F for 15.0 kg CO₂");
+
+        const scoreC = EcoTrack.EcoScores.getScore(2.5);
+        this.assert(scoreC.grade === "C", "getScore assigns grade C for 2.5 kg CO₂");
+
+        console.groupEnd();
+    },
+
+    testOffsetProjects() {
+        console.group("🌍 OffsetProjects Validation");
+
+        // 1. getByCategory 'all'
+        const allProjects = EcoTrack.OffsetProjects.getByCategory("all");
+        this.assert(allProjects.length === EcoTrack.OffsetProjects.projects.length, "getByCategory 'all' returns all offset projects");
+
+        // 2. Category filter
+        const reforestation = EcoTrack.OffsetProjects.getByCategory("reforestation");
+        this.assert(reforestation.length > 0 && reforestation.every(p => p.category === "reforestation"), "getByCategory filters offset projects by type");
+
+        // 3. getById valid project
+        const project = EcoTrack.OffsetProjects.getById("amazon-reforestation");
+        this.assert(project && project.title === "Amazon Rainforest Restoration", "getById returns correct offset project");
+
+        // 4. getById invalid project
+        const noProject = EcoTrack.OffsetProjects.getById("nonexistent-project");
+        this.assert(noProject === undefined, "getById returns undefined for non-existent project");
+
+        // 5. Data integrity
+        const allValid = EcoTrack.OffsetProjects.projects.every(p => p.id && p.title && p.category && p.co2PerDollar > 0);
+        this.assert(allValid, "All offset projects have required fields with valid data");
+
+        console.groupEnd();
+    },
+
+    testQuickEstimate() {
+        console.group("⚡ QuickEstimate Validation");
+
+        // 1. Valid result
+        const result = EcoTrack.CalculatorEngine.quickEstimate("mediumMeat", "car", "medium");
+        this.assert(result.total > 0 && result.totalTonnes > 0 && result.ecoScore, "quickEstimate returns valid result for car commuter");
+
+        // 2. Comparison
+        const high = EcoTrack.CalculatorEngine.quickEstimate("highMeat", "car", "large");
+        const low = EcoTrack.CalculatorEngine.quickEstimate("vegan", "walk", "small");
+        this.assert(low.total < high.total, "quickEstimate returns lower footprint for vegan/walker/small home");
+
+        // 3. Eco score grades
+        const scoreAPlus = EcoTrack.CalculatorEngine._calcEcoScore(1.5);
+        this.assert(scoreAPlus.grade === "A+", "Eco score grade A+ for extremely low emissions");
+
+        const scoreF = EcoTrack.CalculatorEngine._calcEcoScore(25);
+        this.assert(scoreF.grade === "F", "Eco score grade F for extremely high emissions");
 
         console.groupEnd();
     },

@@ -122,7 +122,7 @@ EcoTrack.Charts = {
 
         const ctx = canvas.getContext('2d');
         this.instances[canvasId] = new Chart(ctx, {
-            type: options.horizontal ? 'bar' : 'bar',
+            type: 'bar',
             data: {
                 labels: data.labels,
                 datasets: [{

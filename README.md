@@ -63,6 +63,8 @@ EcoTrack/
 ├── js/
 │   ├── app.js                    # SPA router & initialization
 │   ├── firebase-config.js        # Firebase configuration
+│   ├── tests.js                  # Browser-based test suite (console)
+│   ├── tests.node.js             # CLI test runner (Node.js)
 │   ├── services/
 │   │   ├── auth.js               # Firebase Anonymous Auth
 │   │   ├── firestore.js          # Data persistence (Firestore + localStorage)
@@ -71,7 +73,8 @@ EcoTrack/
 │   │   ├── navbar.js             # Responsive navigation
 │   │   ├── charts.js             # Chart.js wrapper (themed)
 │   │   ├── cards.js              # Reusable card templates
-│   │   └── modal.js              # Modal & toast notifications
+│   │   ├── modal.js              # Modal & toast notifications
+│   │   └── forms.js              # Form input component helpers
 │   ├── pages/
 │   │   ├── home.js               # Landing page (hero, features, CTA)
 │   │   ├── calculator.js         # Multi-step carbon calculator
@@ -188,7 +191,7 @@ open http://localhost:8000
 ### Low Impact ✅
 - **Visual Polish**: Glassmorphism design, animated particles, gradient accents, micro-animations
 - **Accessibility**: ARIA labels, keyboard navigation, semantic HTML, reduced-motion support
-- **Testing**: Input validation, error handling, graceful degradation
+- **Testing**: 29-assertion test suite covering CalculatorEngine, Recommendations, EcoScores, OffsetProjects, and quickEstimate with edge cases, boundary conditions, and error handling. Runs in both browser (`?test=true`) and CLI (`npm test`)
 
 ---
 
