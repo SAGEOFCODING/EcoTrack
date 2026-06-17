@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Main Application Router
  * SPA hash-based routing with page transitions

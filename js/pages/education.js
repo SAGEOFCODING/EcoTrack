@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Education Page
  */

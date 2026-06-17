@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Core Testing Suite
  * Validates logical integrity, boundary conditions, and edge cases

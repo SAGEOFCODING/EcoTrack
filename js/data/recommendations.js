@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Smart Recommendation Engine Data
  * Decision trees and personalized action recommendations

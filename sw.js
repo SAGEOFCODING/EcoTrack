@@ -1,3 +1,5 @@
+"use strict";
+
 const CACHE_NAME = 'ecotrack-v1';
 const ASSETS_TO_CACHE = [
   '/',

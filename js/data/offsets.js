@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Carbon Offset Projects Database
  */
@@ -153,11 +155,21 @@ EcoTrack.OffsetProjects = {
         ]
     },
 
+    /**
+     * Get offset projects filtered by category
+     * @param {string} categoryId - Category ID ('all', 'reforestation', 'renewable', 'ocean', 'community', 'technology')
+     * @returns {Array<Object>} Filtered projects
+     */
     getByCategory(categoryId) {
         if (categoryId === 'all') return this.projects;
         return this.projects.filter(p => p.category === categoryId);
     },
 
+    /**
+     * Get a specific offset project by its ID
+     * @param {string} projectId - Project ID
+     * @returns {Object|undefined} Project data or undefined if not found
+     */
     getById(projectId) {
         return this.projects.find(p => p.id === projectId);
     }

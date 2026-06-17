@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Emission Factors Database
  * Sources: EPA, DEFRA, IPCC published datasets

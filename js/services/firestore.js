@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Firestore Service
  * Handles all data persistence with localStorage fallback
@@ -10,7 +12,11 @@ EcoTrack.FirestoreService = {
         return `ecotrack_${uid}_${path}`;
     },
 
-    // Save calculation results
+    /**
+     * Save a carbon footprint calculation to Firestore or localStorage
+     * @param {Object} data - Calculation result from CalculatorEngine
+     * @returns {Promise<Object|null>} Saved calculation with ID, or null if no user
+     */
     async saveCalculation(data) {
         const uid = EcoTrack.AuthService.getUid();
         if (!uid) return null;
@@ -66,7 +72,10 @@ EcoTrack.FirestoreService = {
         return calcs.length;
     },
 
-    // Get all calculations
+    /**
+     * Get all saved calculations for the current user
+     * @returns {Promise<Array<Object>>} Array of calculation objects, newest first
+     */
     async getCalculations() {
         const uid = EcoTrack.AuthService.getUid();
         if (!uid) return [];
@@ -91,7 +100,10 @@ EcoTrack.FirestoreService = {
         return JSON.parse(localStorage.getItem(key) || '[]').reverse();
     },
 
-    // Get latest calculation
+    /**
+     * Get the most recent calculation for the current user
+     * @returns {Promise<Object|null>} Latest calculation or null
+     */
     async getLatestCalculation() {
         const uid = EcoTrack.AuthService.getUid();
         if (!uid) return null;
@@ -122,7 +134,12 @@ EcoTrack.FirestoreService = {
         return stored ? JSON.parse(stored) : null;
     },
 
-    // Save adopted actions
+    /**
+     * Save or remove an adopted action plan
+     * @param {string} actionId - Recommendation ID
+     * @param {boolean} adopted - Whether the action is adopted
+     * @returns {Promise<void>}
+     */
     async saveAction(actionId, adopted) {
         const uid = EcoTrack.AuthService.getUid();
         if (!uid) return;
@@ -159,7 +176,10 @@ EcoTrack.FirestoreService = {
         localStorage.setItem(key, JSON.stringify(existing));
     },
 
-    // Get adopted actions
+    /**
+     * Get all adopted action plans for the current user
+     * @returns {Promise<Object>} Map of actionId to action data
+     */
     async getAdoptedActions() {
         const uid = EcoTrack.AuthService.getUid();
         if (!uid) return {};
@@ -189,7 +209,10 @@ EcoTrack.FirestoreService = {
         return adopted;
     },
 
-    // Clear all user data
+    /**
+     * Clear all user data from both Firestore and localStorage
+     * @returns {Promise<void>}
+     */
     async clearAllData() {
         const uid = EcoTrack.AuthService.getUid();
         if (!uid) return;

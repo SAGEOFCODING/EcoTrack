@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Calculator Page
  * Multi-step carbon footprint calculator

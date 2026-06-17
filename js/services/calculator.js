@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Carbon Calculation Engine
  * Processes user inputs and calculates carbon footprint

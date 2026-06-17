@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — CLI Testing Suite (Node.js)
  * Validates logical integrity, boundary conditions, and edge cases in terminal

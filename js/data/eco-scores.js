@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Eco-Score Daily Activities Database
  * Rates everyday activities on A-F scale with CO₂ equivalents
@@ -75,6 +77,11 @@ EcoTrack.EcoScores = {
         { id: 'ebook', name: 'Reading an E-Book', category: 'lifestyle', kgCO2: 0.02, icon: '📖', description: 'Digital reading has minimal per-book emissions after device manufacture.' }
     ],
 
+    /**
+     * Get the eco-score grade for a given CO₂ value
+     * @param {number} kgCO2 - CO₂ emissions in kilograms
+     * @returns {{grade: string, max: number, color: string, label: string}} Score details
+     */
     getScore(kgCO2) {
         for (const [grade, threshold] of Object.entries(this.scoreThresholds)) {
             if (kgCO2 <= threshold.max) return { grade, ...threshold };
@@ -82,11 +89,21 @@ EcoTrack.EcoScores = {
         return { grade: 'F', ...this.scoreThresholds.F };
     },
 
+    /**
+     * Get activities filtered by category
+     * @param {string} categoryId - Category ID ('all', 'meals', 'transport', 'energy', 'lifestyle')
+     * @returns {Array<Object>} Filtered activities
+     */
     getByCategory(categoryId) {
         if (categoryId === 'all') return this.activities;
         return this.activities.filter(a => a.category === categoryId);
     },
 
+    /**
+     * Search activities by name, description, or category
+     * @param {string} query - Search query string
+     * @returns {Array<Object>} Matching activities
+     */
     search(query) {
         const lower = query.toLowerCase();
         return this.activities.filter(a =>
@@ -96,6 +113,12 @@ EcoTrack.EcoScores = {
         );
     },
 
+    /**
+     * Compare two activities by their CO₂ impact
+     * @param {string} id1 - First activity ID
+     * @param {string} id2 - Second activity ID
+     * @returns {Object|null} Comparison result or null if IDs not found
+     */
     compare(id1, id2) {
         const a1 = this.activities.find(a => a.id === id1);
         const a2 = this.activities.find(a => a.id === id2);

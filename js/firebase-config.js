@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Firebase Configuration
  * Handles Firebase app initialization

@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Authentication Service
  * Handles Firebase Anonymous Auth with localStorage fallback
@@ -8,6 +10,10 @@ EcoTrack.AuthService = {
     currentUser: null,
     listeners: [],
 
+    /**
+     * Initialize authentication with Firebase or localStorage fallback
+     * @returns {Promise<Object>} Authenticated user object
+     */
     async init() {
         if (this._initialized) return this.currentUser;
         this._initialized = true;
@@ -51,6 +57,10 @@ EcoTrack.AuthService = {
         this._notifyListeners();
     },
 
+    /**
+     * Register a callback to be notified of auth state changes
+     * @param {Function} callback - Called with user object on auth changes
+     */
     onAuthChange(callback) {
         this.listeners.push(callback);
         if (this.currentUser) callback(this.currentUser);
@@ -60,10 +70,18 @@ EcoTrack.AuthService = {
         this.listeners.forEach(cb => cb(this.currentUser));
     },
 
+    /**
+     * Get the current user's unique ID
+     * @returns {string|null} User ID or null if not authenticated
+     */
     getUid() {
         return this.currentUser?.uid || null;
     },
 
+    /**
+     * Check if the user is currently authenticated
+     * @returns {boolean} True if authenticated
+     */
     isAuthenticated() {
         return this.currentUser !== null;
     }

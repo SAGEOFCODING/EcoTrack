@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Eco-Score Page
  */

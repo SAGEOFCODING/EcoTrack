@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Form Component Helpers
  * DRYs out HTML template logic for forms

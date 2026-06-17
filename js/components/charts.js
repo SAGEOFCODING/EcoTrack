@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * EcoTrack — Chart.js Wrapper Components
  * Consistent chart theming and helpers
