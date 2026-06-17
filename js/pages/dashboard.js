@@ -82,46 +82,28 @@ EcoTrack.Pages.Dashboard = {
                 <div class="card" style="padding: var(--space-6);">
                     <h4 style="margin-bottom: var(--space-4);">Quick Insights</h4>
                     <div class="flex flex-col gap-4">
-                        <div class="card card-flat" style="padding: var(--space-4);">
-                            <div class="flex items-center gap-3">
-                                <span style="font-size: 1.5rem;">🚗</span>
-                                <div>
-                                    <div class="stat-label">Transport</div>
-                                    <div style="font-weight: 600;">${Math.round(cats.transport || 0).toLocaleString()} kg CO₂</div>
+                        ${[
+                            { key: 'transport', label: 'Transport', icon: '🚗' },
+                            { key: 'food', label: 'Food & Diet', icon: '🍽️' },
+                            { key: 'energy', label: 'Home Energy', icon: '⚡' },
+                            { key: 'shopping', label: 'Shopping', icon: '🛒' }
+                        ].map(cat => {
+                            const value = cats[cat.key] || 0;
+                            const percentage = pct[cat.key] || 0;
+                            const badgeClass = percentage > 30 ? 'danger' : 'primary';
+                            return `
+                                <div class="card card-flat" style="padding: var(--space-4);">
+                                    <div class="flex items-center gap-3">
+                                        <span style="font-size: 1.5rem;">${cat.icon}</span>
+                                        <div>
+                                            <div class="stat-label">${cat.label}</div>
+                                            <div style="font-weight: 600;">${Math.round(value).toLocaleString()} kg CO₂</div>
+                                        </div>
+                                        <span class="badge badge-${badgeClass}" style="margin-left: auto;">${percentage}%</span>
+                                    </div>
                                 </div>
-                                <span class="badge badge-${(pct.transport || 0) > 30 ? 'danger' : 'primary'}" style="margin-left: auto;">${pct.transport || 0}%</span>
-                            </div>
-                        </div>
-                        <div class="card card-flat" style="padding: var(--space-4);">
-                            <div class="flex items-center gap-3">
-                                <span style="font-size: 1.5rem;">🍽️</span>
-                                <div>
-                                    <div class="stat-label">Food & Diet</div>
-                                    <div style="font-weight: 600;">${Math.round(cats.food || 0).toLocaleString()} kg CO₂</div>
-                                </div>
-                                <span class="badge badge-${(pct.food || 0) > 30 ? 'danger' : 'primary'}" style="margin-left: auto;">${pct.food || 0}%</span>
-                            </div>
-                        </div>
-                        <div class="card card-flat" style="padding: var(--space-4);">
-                            <div class="flex items-center gap-3">
-                                <span style="font-size: 1.5rem;">⚡</span>
-                                <div>
-                                    <div class="stat-label">Home Energy</div>
-                                    <div style="font-weight: 600;">${Math.round(cats.energy || 0).toLocaleString()} kg CO₂</div>
-                                </div>
-                                <span class="badge badge-${(pct.energy || 0) > 30 ? 'danger' : 'primary'}" style="margin-left: auto;">${pct.energy || 0}%</span>
-                            </div>
-                        </div>
-                        <div class="card card-flat" style="padding: var(--space-4);">
-                            <div class="flex items-center gap-3">
-                                <span style="font-size: 1.5rem;">🛒</span>
-                                <div>
-                                    <div class="stat-label">Shopping</div>
-                                    <div style="font-weight: 600;">${Math.round(cats.shopping || 0).toLocaleString()} kg CO₂</div>
-                                </div>
-                                <span class="badge badge-${(pct.shopping || 0) > 30 ? 'danger' : 'primary'}" style="margin-left: auto;">${pct.shopping || 0}%</span>
-                            </div>
-                        </div>
+                            `;
+                        }).join('')}
                     </div>
                     <div class="mt-4">
                         <a href="#calculator" class="btn btn-ghost w-full">🔄 Recalculate</a>

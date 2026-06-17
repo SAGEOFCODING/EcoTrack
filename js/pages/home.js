@@ -7,6 +7,19 @@ EcoTrack.Pages = EcoTrack.Pages || {};
 
 EcoTrack.Pages.Home = {
     render() {
+        const stats = [
+            { id: 'stat-co2', value: '2.4M+', label: 'Tonnes CO₂ Tracked' },
+            { id: 'stat-users', value: '50K+', label: 'Active Users' },
+            { id: 'stat-reduction', value: '12%', label: 'Avg Reduction' }
+        ];
+
+        const steps = [
+            { icon: '🧮', title: 'Calculate', desc: 'Answer simple questions about your lifestyle across 4 categories' },
+            { icon: '📊', title: 'Analyze', desc: 'See your detailed breakdown and how you compare to averages' },
+            { icon: '🎯', title: 'Act', desc: 'Get personalized recommendations sorted by impact' },
+            { icon: '📈', title: 'Track', desc: 'Monitor your progress over time and celebrate wins' }
+        ];
+
         return `
             <section class="hero-section" id="hero-section">
                 <div class="hero-particles" id="hero-particles"></div>
@@ -33,18 +46,12 @@ EcoTrack.Pages.Home = {
                             </a>
                         </div>
                         <div class="hero-stats">
-                            <div class="hero-stat">
-                                <div class="hero-stat-value gradient-text" id="stat-co2">2.4M+</div>
-                                <div class="hero-stat-label">Tonnes CO₂ Tracked</div>
-                            </div>
-                            <div class="hero-stat">
-                                <div class="hero-stat-value gradient-text" id="stat-users">50K+</div>
-                                <div class="hero-stat-label">Active Users</div>
-                            </div>
-                            <div class="hero-stat">
-                                <div class="hero-stat-value gradient-text" id="stat-reduction">12%</div>
-                                <div class="hero-stat-label">Avg Reduction</div>
-                            </div>
+                            ${stats.map(s => `
+                                <div class="hero-stat">
+                                    <div class="hero-stat-value gradient-text" id="${s.id}">${s.value}</div>
+                                    <div class="hero-stat-label">${s.label}</div>
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
                 </div>
@@ -76,29 +83,14 @@ EcoTrack.Pages.Home = {
                         <p>Our data-driven approach makes it easy to understand and reduce your carbon footprint.</p>
                     </div>
                     <div class="how-steps">
-                        <div class="how-step animate-fade-in-up delay-1">
-                            <div class="how-step-number">🧮</div>
-                            <h4>Calculate</h4>
-                            <p>Answer simple questions about your lifestyle across 4 categories</p>
-                        </div>
-                        <div class="how-connector"></div>
-                        <div class="how-step animate-fade-in-up delay-2">
-                            <div class="how-step-number">📊</div>
-                            <h4>Analyze</h4>
-                            <p>See your detailed breakdown and how you compare to averages</p>
-                        </div>
-                        <div class="how-connector"></div>
-                        <div class="how-step animate-fade-in-up delay-3">
-                            <div class="how-step-number">🎯</div>
-                            <h4>Act</h4>
-                            <p>Get personalized recommendations sorted by impact</p>
-                        </div>
-                        <div class="how-connector"></div>
-                        <div class="how-step animate-fade-in-up delay-4">
-                            <div class="how-step-number">📈</div>
-                            <h4>Track</h4>
-                            <p>Monitor your progress over time and celebrate wins</p>
-                        </div>
+                        ${steps.map((step, i) => `
+                            <div class="how-step animate-fade-in-up delay-${i + 1}">
+                                <div class="how-step-number">${step.icon}</div>
+                                <h4>${step.title}</h4>
+                                <p>${step.desc}</p>
+                            </div>
+                            ${i < steps.length - 1 ? '<div class="how-connector"></div>' : ''}
+                        `).join('')}
                     </div>
                 </div>
             </section>

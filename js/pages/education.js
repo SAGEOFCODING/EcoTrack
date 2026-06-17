@@ -77,22 +77,17 @@ EcoTrack.Pages.Education = {
                         <h3 style="margin-bottom: var(--space-3);">📊 Understanding Carbon Units</h3>
                         <p style="max-width: 600px; margin: 0 auto var(--space-6);">Carbon emissions are measured in CO₂ equivalents (CO₂e), which include all greenhouse gases converted to their CO₂ warming potential.</p>
                         <div class="grid grid-4 gap-4">
-                            <div class="card card-flat" style="padding: var(--space-4); text-align: center;">
-                                <div style="font-size: 2rem; margin-bottom: var(--space-2);">1 kg</div>
-                                <div class="stat-label">= 1 balloon of CO₂</div>
-                            </div>
-                            <div class="card card-flat" style="padding: var(--space-4); text-align: center;">
-                                <div style="font-size: 2rem; margin-bottom: var(--space-2);">1 tonne</div>
-                                <div class="stat-label">= Hot air balloon</div>
-                            </div>
-                            <div class="card card-flat" style="padding: var(--space-4); text-align: center;">
-                                <div style="font-size: 2rem; margin-bottom: var(--space-2);">4.8 t</div>
-                                <div class="stat-label">= Global average/yr</div>
-                            </div>
-                            <div class="card card-flat" style="padding: var(--space-4); text-align: center;">
-                                <div style="font-size: 2rem; margin-bottom: var(--space-2);">2.9 t</div>
-                                <div class="stat-label">= 2030 Paris target</div>
-                            </div>
+                            ${[
+                                { value: '1 kg', label: '= 1 balloon of CO₂' },
+                                { value: '1 tonne', label: '= Hot air balloon' },
+                                { value: '4.8 t', label: '= Global average/yr' },
+                                { value: '2.9 t', label: '= 2030 Paris target' }
+                            ].map(unit => `
+                                <div class="card card-flat" style="padding: var(--space-4); text-align: center;">
+                                    <div style="font-size: 2rem; margin-bottom: var(--space-2);">${unit.value}</div>
+                                    <div class="stat-label">${unit.label}</div>
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
                 </div>
